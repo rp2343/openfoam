@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hpc-robot
+  namespace: hpc-{{environment}}
+  labels:
+    app: hpc
+    component: robot
+    environment: {{environment}}
+data:

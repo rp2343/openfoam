@@ -1,0 +1,83 @@
+{
+  "Robot": {
+    "PersonaResultsEventHubConnectionString": "Endpoint=sb://azbetlogsingest.servicebus.windows.net/;SharedAccessKeyName=write;SharedAccessKey={{Secret:EventHubazbetlogs5WriteKey}};EntityPath=azbetlogs5",
+    "TargetEnvironment": "hpc-local",
+    "LogEnabledLoggers": "EventHubs",
+    "LogEventHubConnectionString": "Endpoint=sb://azbetlogsingest.servicebus.windows.net/;SharedAccessKeyName=write;SharedAccessKey={{Secret:EventHubazbetlogs5WriteKey}};EntityPath=azbetlogs5",
+    "MaxDegreeOfParallelism": "100",
+    "MaxMessagesPerTask": "10",
+    "IncludeHappinessCounts": "true",
+    "WorkloadProfile": {
+      "Scheduler": "static",
+      "InteractionRates": {
+        "HPCBenchmark": 0.1
+      }
+    }
+  },
+
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Information",
+      "System": "Information",
+      "Microsoft": "Information"
+    },
+
+    "logEnrichmentProperties": {
+      "MachineRole": "Robot",
+      "Environment": "hpc-local"
+    }
+  },
+
+  "ApplicationInsights": {
+    "TelemetryServiceEndpoint": "https://dc.services.visualstudio.com/v2/track",
+    "InstrumentationKey": "{{Secret:KustoInstrumentationKey}}",
+
+    "BlobPublisher": {
+      "StorageAccounts": [
+        "DefaultEndpointsProtocol=https;AccountName=e4kikjbpfmzwwkusto0;AccountKey={{Secret:RhapsoKustoStorageKey0}}",
+        "DefaultEndpointsProtocol=https;AccountName=y2sjgwlzx2sl6kusto1;AccountKey={{Secret:RhapsoKustoStorageKey1}}",
+        "DefaultEndpointsProtocol=https;AccountName=t5rtos2sqfy6kkusto2;AccountKey={{Secret:RhapsoKustoStorageKey2}}",
+        "DefaultEndpointsProtocol=https;AccountName=xykkb4nh3uxbakusto3;AccountKey={{Secret:RhapsoKustoStorageKey3}}",
+        "DefaultEndpointsProtocol=https;AccountName=arvuxlldrqwqkkusto4;AccountKey={{Secret:RhapsoKustoStorageKey4}}"
+      ],
+      "BaseContainerName": "kusto-logs"
+    },
+
+    "BatchBuffer": {
+      "maxBacklog": 10000,
+      "maxWindowCount": 1000,
+      "windowSize": "00:00:30"
+    },
+
+    "BlobSinkBuffer": {
+      "memoryBufferBytes": 20485760,
+      "bufferFlush": "00:01:00",
+      "useGzip": true
+    },
+
+    "DataSourceSchemaIds": {
+      "Interactions": "{{Secret:KustoSchemaId-Interactions}}",
+      "Log": "{{Secret:KustoSchemaId-Log}}",
+      "Exception": "{{Secret:KustoSchemaId-Exception}}"
+    },
+
+
+    "AIBlobNotification": {
+      "Endpoint": "https://log-ingestor.maxeffort.net/api/ingest"
+    },
+
+    "LogLevels": {
+      "Default": "Information",
+      "Database": "Information",
+      "WebApi": "Information"
+    },
+
+    "Aggregator": {
+      "maxBacklog": 1000,
+      "maxWindowCount": 100,
+      "windowSize": "00:00:05"
+    }
+  },
+
+}

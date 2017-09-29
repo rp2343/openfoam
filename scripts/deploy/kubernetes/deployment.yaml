@@ -1,0 +1,43 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: hpc-robot
+  namespace: hpc-{{environment}}
+  labels:
+    app: hpc
+    component: robot
+    environment: {{environment}}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: hpc-robot
+      labels:
+        app: hpc
+        component: robot
+        environment: {{environment}}
+    spec:
+      imagePullSecrets:
+        - name: azurecate2ehub-docker-registry
+      containers:
+      - name: hpc-robot
+        image: {{image}}
+        env:
+          - name: ENVIRONMENT
+            value: {{environment}}
+        volumeMounts:
+          - name: hpc-robot-config
+            mountPath: /app/settings
+            readOnly: true
+        resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+        imagePullPolicy: Always
+      volumes:
+      - name: hpc-robot-config
+        configMap:
+            name: hpc-robot
